@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lyrics</title>
+<style>
+:root{--bg:260}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#05050a;color:#fff;overflow:hidden;font-family:"Segoe UI Black","Arial Black",Impact,system-ui,sans-serif}
+.orb{position:fixed;width:60vmax;height:60vmax;border-radius:50%;filter:blur(90px);opacity:.45;background:hsl(var(--bg) 90% 45%);transition:background 1.4s;animation:drift 18s ease-in-out infinite alternate}
+.o1{left:-20vmax;top:-20vmax}.o2{right:-25vmax;bottom:-25vmax;animation-delay:-9s;background:hsl(calc(var(--bg) + 70) 90% 40%)}
+@keyframes drift{to{transform:translate(12vmax,8vmax) scale(1.2)}}
+#stage{position:fixed;inset:0;display:grid;place-items:center;padding:4vw;text-align:center}
+.chunk{display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:.25em .35em;line-height:1.05;text-transform:uppercase;transition:opacity .35s,filter .35s,transform .35s}
+.chunk.stack{flex-direction:column}
+.chunk.out{opacity:0;filter:blur(14px);transform:scale(1.08)}
+.w{display:inline-block;white-space:nowrap}
+.l{display:inline-block;color:hsl(var(--h) 100% 80%);text-shadow:0 0 .35em hsl(var(--h) 100% 60%/.6);animation-fill-mode:both;animation-duration:.7s;animation-delay:calc(var(--i)*45ms);animation-timing-function:cubic-bezier(.2,.9,.2,1)}
+.fx0 .l{animation-name:rise}.fx1 .l{animation-name:zoom}.fx2 .l{animation-name:flip}
+.fx3 .l{animation-name:glitch;animation-duration:.5s}.fx3{animation:shake .12s steps(2) 6}
+.fx4 .l{animation-name:neon;color:#fff;text-shadow:0 0 .1em #fff,0 0 .4em hsl(var(--h) 100% 60%),0 0 .9em hsl(var(--h) 100% 55%)}
+.fx5 .l{animation:rise .6s both,bob 1.2s ease-in-out infinite;animation-delay:calc(var(--i)*45ms),calc(var(--i)*-120ms)}
+.fx6{animation:track 1.1s cubic-bezier(.2,.9,.2,1) both}
+.fx7 .w:nth-child(odd){animation:inL .7s both}.fx7 .w:nth-child(even){animation:inR .7s both}
+@keyframes rise{from{opacity:0;transform:translateY(.7em) scale(.7);filter:blur(12px)}}
+@keyframes zoom{from{opacity:0;transform:scale(4);filter:blur(10px)}}
+@keyframes flip{from{opacity:0;transform:perspective(500px) rotateX(-95deg)}}
+@keyframes glitch{0%{opacity:0;transform:translateX(-.3em);text-shadow:.08em 0 red,-.08em 0 cyan}40%{opacity:1;transform:translateX(.15em) skewX(15deg)}70%{transform:translateX(-.05em)}}
+@keyframes shake{25%{transform:translate(.02em,-.02em)}75%{transform:translate(-.02em,.02em)}}
+@keyframes neon{0%{opacity:0}20%{opacity:1}30%{opacity:.3}45%{opacity:1}55%{opacity:.5}70%,100%{opacity:1}}
+@keyframes bob{50%{transform:translateY(-.12em)}}
+@keyframes track{from{letter-spacing:.6em;opacity:0;filter:blur(14px)}}
+@keyframes inL{from{opacity:0;transform:translateX(-40vw)}}
+@keyframes inR{from{opacity:0;transform:translateX(40vw)}}
+#bar{position:fixed;left:0;bottom:0;height:3px;width:0;background:hsl(var(--bg) 100% 70%)}
+#cover{position:fixed;inset:0;z-index:5;display:grid;place-items:center;background:rgba(5,5,10,.92);cursor:pointer;text-align:center}
+#cover b{font-size:min(12vw,5rem);display:block;letter-spacing:.08em}
+#cover span{opacity:.6;font:400 1rem system-ui;letter-spacing:.2em}
+#msg{position:fixed;top:1rem;left:0;right:0;text-align:center;font:400 .9rem system-ui;color:#f99;z-index:6}
+</style>
+</head>
+<body>
+<div class="orb o1"></div><div class="orb o2"></div>
+<div id="stage"></div><div id="bar"></div><div id="msg"></div>
+<div id="cover"><div><b>▶ PLAY</b><span>НАЖМИ, ЧТОБЫ ВКЛЮЧИТЬ ЗВУК</span></div></div>
+<audio id="a" src="mus.mp3" preload="auto"></audio>
+<script src="lyrics.js"></script>
+<script>
+const $=s=>document.querySelector(s),a=$('#a'),stage=$('#stage'),cover=$('#cover'),msg=$('#msg');
+const WORDS=(window.LYRICS||[]).filter(w=>w.w);
+// 1–3 слова на экран: рвём по паузам, знакам конца фразы и длине
+const chunks=[];let c=null;
+for(const w of WORDS){
+  if(c){const l=c.words[c.words.length-1],len=c.words.reduce((n,x)=>n+x.w.length,0)+w.w.length;
+    if(c.words.length<3&&w.s-l.e<.5&&!/[.!?…]$/.test(l.w)&&len<=16){c.words.push(w);c.e=w.e;continue}
+    chunks.push(c)}
+  c={words:[w],s:w.s,e:w.e}}
+if(c)chunks.push(c);
+chunks.forEach((k,i)=>{const n=chunks[i+1];k.end=Math.max(k.e,Math.min(n?n.s:1e9,k.e+.8))});
+
+let cur=-1,el=null;
+function show(i){
+  if(el){const o=el;o.classList.add('out');setTimeout(()=>o.remove(),380);el=null}
+  cur=i;if(i<0)return;
+  const k=chunks[i],d=document.createElement('div');
+  const total=k.words.reduce((n,x)=>n+x.w.length,0),stack=total>14&&k.words.length>1;
+  d.className='chunk fx'+((i*5+(i>>3))%8)+(stack?' stack':'');
+  const h=(i*47)%360;d.style.setProperty('--h',h);document.body.style.setProperty('--bg',h);
+  let n=0;
+  k.words.forEach(w=>{const s=document.createElement('span');s.className='w';
+    for(const ch of w.w){const l=document.createElement('span');l.className='l';l.textContent=ch;l.style.setProperty('--i',n++);s.appendChild(l)}
+    d.appendChild(s)});
+  const longest=Math.max(...k.words.map(w=>w.w.length)),lines=stack?k.words.length:1,
+        chars=stack?longest:total+k.words.length-1;
+  d.style.fontSize=`min(${Math.min(16,90/(chars*.62))}vw,${55/lines/1.1}vh)`;
+  stage.appendChild(d);el=d;
+}
+function frame(){
+  const t=a.currentTime;let lo=0,hi=chunks.length-1,f=-1;
+  while(lo<=hi){const m=(lo+hi)>>1;if(chunks[m].s<=t){f=m;lo=m+1}else hi=m-1}
+  const want=(f>=0&&t<=chunks[f].end)?f:-1;
+  if(want!==cur)show(want);
+  $('#bar').style.width=(a.duration?t/a.duration*100:0)+'%';
+  requestAnimationFrame(frame)}
+function start(){cover.style.display='none';a.play().catch(()=>cover.style.display='grid')}
+cover.onclick=start;
+document.onclick=e=>{if(e.target===cover||cover.contains(e.target))return;a.paused?a.play():a.pause()};
+addEventListener('keydown',e=>{if(e.code==='Space'){e.preventDefault();a.paused?a.play():a.pause()}});
+a.onended=()=>{show(-1);cover.querySelector('b').textContent='↻ ЕЩЁ РАЗ';cover.style.display='grid';a.currentTime=0};
+a.onerror=()=>msg.textContent='Не найден mus.mp3 — положи его рядом с index.html';
+if(!chunks.length)msg.textContent='Нет таймингов: запусти make_lyrics.py (создаст lyrics.js)';
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>

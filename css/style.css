@@ -5,7 +5,7 @@ a{color:inherit;text-decoration:none}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 :focus-visible{outline:2px solid var(--acc);outline-offset:2px}
 .ic{display:inline-flex;width:24px;height:24px;align-items:center;justify-content:center;font-size:18px;line-height:1}
-.ic img{width:100%;height:100%;object-fit:contain;filter:invert(1)} /* чёрные SVG-иконки -> белые */
+.ic img,.ic svg,.ib img,.ib svg{width:100%;height:100%;object-fit:contain;filter:brightness(0) invert(1)} /* чёрные SVG-иконки -> чисто белые */
 .ib{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:none}
 .ib:hover{background:#262626}.ib.big{width:46px;height:46px}.ib.on{color:var(--acc)}
 .top{position:fixed;inset:0 0 auto 0;height:64px;z-index:20;display:flex;align-items:center;gap:12px;padding:0 16px;background:#000;border-bottom:1px solid var(--line)}

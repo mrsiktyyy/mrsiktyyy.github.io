@@ -1,9 +1,0 @@
-{
-  "artist": "mrsiktyyy",
-  "tracks": [
-    { "id": 1, "title": "Атлантида",   "artist": "mrsiktyyy", "file": "Атлантида.mp3" },
-    { "id": 2, "title": "РепЛовушки",  "artist": "mrsiktyyy", "file": "РепЛовушки.mp3" },
-    { "id": 3, "title": "Семья",       "artist": "mrsiktyyy", "file": "Семья.mp3" },
-    { "id": 4, "title": "ВойнаВРепе",  "artist": "mrsiktyyy", "file": "ВойнаВРепе.mp3" }
-  ]
-}

@@ -1,155 +1,54 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Вкусная еда</title>
-  <style>
-    :root {
-      --lime: #e6f7c2;
-      --lime-dark: #b9e26b;
-      --blue: #dcefff;
-      --blue-dark: #8ccaf0;
-      --white: #ffffff;
-      --text: #2d3a2e;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Segoe UI", Roboto, Arial, sans-serif;
-      color: var(--text);
-      background: linear-gradient(160deg, var(--lime) 0%, var(--white) 50%, var(--blue) 100%);
-      min-height: 100vh;
-      padding: 40px 16px;
-    }
-    header, main { max-width: 800px; margin: 0 auto; }
-    header {
-      text-align: center;
-      animation: fadeUp 0.8s ease both;
-    }
-    h1 { font-size: 2.2rem; font-weight: 600; }
-    header p { margin-top: 8px; opacity: 0.7; }
-
-    .tabs {
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      margin: 32px 0 24px;
-      flex-wrap: wrap;
-      animation: fadeUp 0.8s 0.2s ease both;
-    }
-    .tab {
-      border: none;
-      background: var(--white);
-      padding: 10px 22px;
-      border-radius: 999px;
-      font-size: 1rem;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-      transition: background 0.3s, transform 0.2s;
-    }
-    .tab:hover { transform: translateY(-2px); }
-    .tab.active { background: var(--blue-dark); color: var(--white); }
-
-    .panel { display: none; }
-    .panel.active { display: grid; gap: 16px; animation: fadeUp 0.5s ease both; }
-
-    .card {
-      background: var(--white);
-      border-radius: 18px;
-      padding: 22px;
-      border-left: 6px solid var(--lime-dark);
-      box-shadow: 0 4px 14px rgba(0,0,0,0.05);
-      opacity: 0;
-      animation: fadeUp 0.6s ease forwards;
-    }
-    .panel.active .card:nth-child(2) { animation-delay: 0.1s; }
-    .panel.active .card:nth-child(3) { animation-delay: 0.2s; }
-    .panel.active .card:nth-child(4) { animation-delay: 0.3s; }
-    .card:nth-child(even) { border-left-color: var(--blue-dark); }
-    .card h2 { font-size: 1.2rem; margin-bottom: 6px; }
-    .card p { line-height: 1.6; opacity: 0.85; }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      * { animation: none !important; transition: none !important; }
-      .card { opacity: 1; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Music — mrsiktyyy</title>
+<meta name="theme-color" content="#030303">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <header>
-    <h1>Вкусная еда</h1>
-    <p>Простые рецепты и идеи для каждого дня</p>
-  </header>
+<header class="top">
+  <div class="logo"><span class="dot"></span>Music</div>
+  <input id="search" type="search" placeholder="Поиск песен" aria-label="Поиск песен" autocomplete="off">
+</header>
 
-  <main>
-    <nav class="tabs">
-      <button class="tab active" data-tab="breakfast">Завтрак</button>
-      <button class="tab" data-tab="lunch">Обед</button>
-      <button class="tab" data-tab="dessert">Десерты</button>
-    </nav>
+<main>
+  <section class="hero">
+    <div class="cover big" id="heroCover"></div>
+    <div>
+      <h1>Мои треки</h1>
+      <p id="count"></p>
+      <button class="play-all" id="playAll">Слушать</button>
+      <button class="ghost" id="shuffleAll">Вперемешку</button>
+    </div>
+  </section>
+  <ol id="list" class="list"></ol>
+  <p id="empty" class="empty" hidden>Ничего не найдено. Попробуйте другое название.</p>
+</main>
 
-    <section class="panel active" id="breakfast">
-      <div class="card">
-        <h2>Овсянка с ягодами</h2>
-        <p>Сварите овсянку на молоке, добавьте мёд и свежие ягоды.</p>
-      </div>
-      <div class="card">
-        <h2>Омлет с зеленью</h2>
-        <p>Взбейте яйца с солью, добавьте укроп и жарьте на среднем огне.</p>
-      </div>
-      <div class="card">
-        <h2>Смузи из банана</h2>
-        <p>Банан, йогурт и немного молока взбейте блендером до гладкости.</p>
-      </div>
-    </section>
+<footer class="player" id="player">
+  <input id="seek" type="range" min="0" max="1000" value="0" aria-label="Перемотка">
+  <div class="row">
+    <div class="now">
+      <div class="cover" id="nowCover"></div>
+      <div class="meta"><b id="nowTitle">Выберите песню</b><span id="nowArtist"></span></div>
+    </div>
+    <div class="ctrl">
+      <button id="shuffle" title="Перемешать" aria-pressed="false">⤮</button>
+      <button id="prev" title="Предыдущий">⏮</button>
+      <button id="play" class="main" title="Играть">▶</button>
+      <button id="next" title="Следующий">⏭</button>
+      <button id="repeat" title="Повтор" aria-pressed="false">⟲</button>
+    </div>
+    <div class="side">
+      <span id="time">0:00 / 0:00</span>
+      <input id="vol" type="range" min="0" max="100" value="80" aria-label="Громкость">
+    </div>
+  </div>
+</footer>
+<audio id="audio" preload="metadata"></audio>
 
-    <section class="panel" id="lunch">
-      <div class="card">
-        <h2>Куриный суп</h2>
-        <p>Варите курицу с морковью и луком, в конце добавьте зелень.</p>
-      </div>
-      <div class="card">
-        <h2>Салат с киноа</h2>
-        <p>Смешайте отварную киноа, огурец, помидоры и лаймовую заправку.</p>
-      </div>
-      <div class="card">
-        <h2>Паста с овощами</h2>
-        <p>Обжарьте кабачок и перец, добавьте к отварной пасте и сыр.</p>
-      </div>
-    </section>
-
-    <section class="panel" id="dessert">
-      <div class="card">
-        <h2>Панна-котта</h2>
-        <p>Сливки, сахар и желатин. Охладите в формочках несколько часов.</p>
-      </div>
-      <div class="card">
-        <h2>Фруктовый салат</h2>
-        <p>Киви, клубника и манго с каплей лайма и мятой.</p>
-      </div>
-      <div class="card">
-        <h2>Шоколадный брауни</h2>
-        <p>Тёмный шоколад, масло, яйца и мука. Выпекайте 20 минут при 180°C.</p>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    const tabs = document.querySelectorAll('.tab');
-    const panels = document.querySelectorAll('.panel');
-
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        panels.forEach(p => p.classList.remove('active'));
-        tab.classList.add('active');
-        document.getElementById(tab.dataset.tab).classList.add('active');
-      });
-    });
-  </script>
+<script type="module" src="js/app.js"></script>
 </body>
 </html>

@@ -1,0 +1,16 @@
+{
+  "tracks": [
+    { "id": 1, "title": "Атлантида",  "artist": "MC killler", "file": "Атлантида.mp3",  "cover": "Атлантида.jpg",  "date": "2026-11-01" },
+    { "id": 2, "title": "РепЛовушки", "artist": "MC killler", "file": "Реп-ловушки.mp3", "cover": "РепЛовушки.jpg", "date": "2026-11-05" },
+    { "id": 3, "title": "Семья",      "artist": "MC killler", "file": "Семья.mp3",      "cover": "Семья.jpg",      "date": "2026-11-10" },
+    { "id": 4, "title": "Война в репе", "artist": "MC killler", "file": "ВойнаВРепе.mp3", "cover": "ВойнаВРепе.jpg", "date": "2026-11-20" },
+    { "id": 5, "title": "Буду твоей пальмой", "artist": "MORGENSHTERN", "file": "БудуТвоейПальмой.mp3", "cover": "БудуТвоейПальмой.jpg", "date": "2026-11-20" },
+    { "id": 6, "title": "Бледный", "artist": "dabbackwood", "file": "Бледный.mp3", "cover": "Бледный.jpg", "date": "2026-11-20" },
+    { "id": 7, "title": "Заново", "artist": "dabbackwood", "file": "Заново.mp3", "cover": "Заново.jpg", "date": "2026-11-20" },
+{ "id": 8, "title": "ЗеленоглазыеДеффки", "artist": "MORGENSHTERN", "file": "ЗеленоглазыеДеффки.mp3", "cover": "ЗеленоглазыеДеффки.jpg", "date": "2026-11-20" }
+  ],
+  "playlists": [
+    { "id": "all",  "title": "Все треки MC killler", "ids": [1, 2, 3, 4] },
+    { "id": "best", "title": "Избранное",            "ids": [1, 4] }
+  ]
+}
